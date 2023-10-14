@@ -42,8 +42,7 @@ void task2()
     int a;
     int b;
     char operation;
-    cout << "\tумножение (*)\n\tсложение (+)\n\tвычитание (-)\n\tделение (:)\n\tделение с остатком (%)\n\tделение нацело (/)\n"
-         << endl;
+    cout << "\tумножение (*)\n\tсложение (+)\n\tвычитание (-)\n\tделение (:)\n\tделение с остатком (%)\n\tделение нацело (/)\n\tчисло размещений (r)\n\tчисло сочетаний (s)\n" << endl;
     int cond = 1;
     do
     {
@@ -86,6 +85,18 @@ void task2()
             case ':':
                 cout << a << " : " << b << " = " << double(a) / double(b) << endl;
                 break;
+            case 'r':
+            {
+                cout << "Число размещений = " << fixed << setprecision(0) << tgamma(a + 1) / tgamma(a - b + 1) << endl;
+                break;
+            }
+            case 's':
+            {
+                cout << "Число сочетаний = " << fixed << setprecision(0) << (tgamma(a + 1) / tgamma(a - b + 1)) / tgamma(b + 1) << endl;
+                break;
+            }
+            default:
+                break;
             }
         }
         else
@@ -106,7 +117,8 @@ void task2()
 
 void task3()
 {
-    cout << "Если вы согласны с высказыванием, введите 1, иначе 0\nv" << endl;
+    cout << "Если вы согласны с высказыванием, введите 1, иначе 0\n"
+         << endl;
 
     vector<pair<int, string>> questions;
 
@@ -161,7 +173,11 @@ int main()
 {
     setlocale(0, "rus");
     srand(time(0));
-    // task1();
+    cout << "\t----Task1----\n" << endl;
+    task1();
+    cout << "\n\t----Task2----\n" << endl;
     task2();
+    cout << "\n\t----Task3----\n" << endl;
+    task3();
     return 0;
 }
