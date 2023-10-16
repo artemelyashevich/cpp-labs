@@ -117,7 +117,6 @@ void task3(){
 	questions.push_back({ 1, "Артиллерия всегда по своим стреляет" });
 	questions.push_back({ 0, "Витя молодец" });
 	questions.push_back({ 1, "Бутерброд с ветчиной лучше вечного блаженства?" });
-	questions.push_back({ 1, "Дмитрий Васильевич молодец" });
 	questions.push_back({ 1, "Ха тэ эм эл" });
 	questions.push_back({ 1, "Скажем родине спасибо за то, что у нас есть четверги" });
 	questions.push_back({ 0, "Пушкину нужна была математика, чтобы его застрелили" });
@@ -127,10 +126,10 @@ void task3(){
 	questions.push_back({ 1, "Алигн итемс" });
 	questions.push_back({ 1, "При входе преподавателя будем практиковать громкие аплодисменты, плавно переходящие в бурные овации" });
 
-	results.push_back({ 25, "камень" });
+	results.push_back({ 25, "абитуриент" });
 	results.push_back({ 50, "обезьяна" });
 	results.push_back({ 75, "Шамонин" });
-	results.push_back({ 100, "Воронович" });
+	results.push_back({ 100, "легедна мехмата" });
 
 	vector<int> answers;
 
