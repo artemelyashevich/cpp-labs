@@ -6,7 +6,7 @@
 
 using namespace std;
 
-void task1() { 
+void task1() {
 	string operations[3] = { "камень", "ножницы", "бумагу" };
 	int user;
 	int ai = rand() % 3 + 1;
@@ -20,13 +20,6 @@ void task1() {
 
 void printResult(char operation, int a, int b, int result) {
 	cout << a << " " << operation << " " << b << " = " << result << endl;
-}
-
-long long factorial(int n) {
-	if (n > 1)
-		return n * factorial(n - 1);
-	else
-		return 1;
 }
 
 void task2() {
@@ -43,7 +36,7 @@ void task2() {
 		cout << "Введите операцию:" << endl;
 		cin >> operation;
 
-			if (operation != '!') {
+		if (operation != '!') {
 			cout << "Введите второе число:" << endl;
 			cin >> b;
 			switch (operation)
@@ -83,21 +76,21 @@ void task2() {
 			}
 			default: break;
 			}
+		}
+		else {
+			if (a <= 20) {
+				cout << a << "! = " << fixed << setprecision(0) << tgamma(a + 1) << endl;
 			}
 			else {
-				if (a <= 20) {
-					cout << a << "! = " << factorial(a) << endl;
-				}
-				else {
-					cout << a << "! = " << fixed << setprecision(0) << tgamma(a + 1) << endl;
-				}
+				cout << a << "! = " << fixed << setprecision(0) << tgamma(a + 1) << endl;
 			}
+		}
 		cout << "Чтобы продолжить нажмите 1, чтобы завершить 0" << endl;
 		cin >> cond;
 	} while (cond != 0);
 }
 
-void task3(){
+void task3() {
 	cout << "Если вы согласны с высказыванием, введите 1, иначе 0\n" << endl;
 
 	vector<pair<int, string>> questions;
