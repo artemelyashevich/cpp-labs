@@ -1,4 +1,5 @@
 #include <iostream>
+#include <ctime>
 #include <vector>
 
 using namespace std;
@@ -8,205 +9,184 @@ class Matrix
 public:
     Matrix() = default;
 
-    Matrix(vector<vector<int>> matrix, vector<int> vect)
+    Matrix(const vector<double> &matrix, int SIZE)
+        : matrix(matrix), SIZE(SIZE)
     {
-        this->matrix = matrix;
-        this->vect = vect;
     }
 
     bool operator==(const Matrix &other) const
     {
-        return matrix == other.matrix;
+        return false;
     }
 
-    vector<vector<int>> getMatrix()
+    vector<double> getMatrix()
     {
         return this->matrix;
-    };
-
-    double getDet()
-    {
-        return this->det;
     }
 
-    vector<int> getFreeM()
+    void setMatrix(vector<double> matrix)
     {
-        return this->freeM;
+        this->matrix = matrix;
     }
 
-    vector<int> getVect()
+    void sollution()
     {
-        return this->vect;
-    }
 
-    void printMatrix()
-    {
-        for (vector<int> row : this->matrix)
+        double ratio = 0;
+        this->printMAtrix();
+
+        for (int i = 0; i < this->SIZE; i++)
         {
-            for (int i : row)
+            if (this->matrix.at(i * (SIZE + 1) + i) == 0)
             {
-                cout << i << " ";
+                int j;
+                for (j = i + 1; j < this->SIZE; j++)
+                {
+                    if (this->matrix.at(j * (this->SIZE + 1) + i) != 0)
+                    {
+                        this->swap(i, j);
+                        break;
+                    }
+                }
+                if (j == this->SIZE)
+                {
+                    cout << "Система уравнений не имеет единственного решения." << endl;
+                    return;
+                }
             }
-            cout << endl;
-        }
-    }
 
-    void setMatrix(int size)
-    {
-        int value;
-        vector<int> row;
-
-        // fill matrix 3x3
-        for (int i = 0; i < size; i++)
-        {
-            for (int j = 0; j < size; j++)
+            for (int j = 0; j < this->SIZE; j++)
             {
-                cin >> value;
-                row.push_back(value);
+                if (i != j)
+                {
+                    ratio = this->matrix.at(j * (SIZE + 1) + i) / this->matrix.at(i * (SIZE + 1) + i);
+                    for (int k = 0; k <= this->SIZE; k++)
+                    {
+                        this->matrix.at(j * (SIZE + 1) + k) -= ratio * this->matrix.at(i * (SIZE + 1) + k);
+                    }
+                }
             }
-            this->matrix.push_back(row);
-            row.clear();
         }
 
-        /*cout << "Введите столбец свободных членов: " << endl;
-        for (int i = 0; i < 3; i++) {
-            cin >> value;
-            this->freeM.push_back(value);
-        }*/
-
-        // fill matrix 1x3
-        for (int i = 0; i < size; i++)
-        {
-            cin >> value;
-            this->vect.push_back(value);
-        }
-
-        this->det = this->findDet(this->matrix);
-        this->multiply();
-        // this->kramerMethod();
-    }
-
-    void printResult()
-    {
-        for (double i : this->sollution)
-        {
-            cout << i << endl;
-        }
+        this->search();
+        this->printSollution();
     }
 
 private:
-    vector<vector<int>> matrix;
-    vector<int> freeM;
-    vector<int> vect;
-    vector<double> sollution;
-    double det = 0;
+    vector<double> matrix;
+    int SIZE = 3;
 
-    double findDet(vector<vector<int>> matrix)
+    void swap(int r1, int r2)
     {
-        size_t sizeMatrix = matrix.size();
-        vector<vector<int>> newMatrix = matrix;
-        int leftMultiply = 1, rightMultiply = 1;
-        int leftSum = 0, rightSum = 0;
-
-        for (int i = 0; i < sizeMatrix; i++)
+        for (int i = 0; i <= this->SIZE; i++)
         {
-
-            for (int j = 0; j < matrix.at(i).size() - 1; j++)
-            {
-                newMatrix.at(i).push_back(matrix.at(i).at(j));
-            }
-        }
-        for (int i = 0; i < sizeMatrix; i++)
-        {
-            for (int pos = 0; pos < sizeMatrix; pos++)
-            {
-                leftMultiply *= newMatrix.at(pos).at(pos + i);
-                rightMultiply *= newMatrix.at(pos).at(sizeMatrix - pos + i - 1);
-            }
-            leftSum += leftMultiply;
-            rightSum += rightMultiply;
-            rightMultiply = 1;
-            leftMultiply = 1;
-        }
-        return leftSum - rightSum;
-    }
-
-    void kramerMethod()
-    {
-        vector<vector<int>> intermediateMatrix = this->getMatrix();
-        vector<double> detArray;
-        int position = 0;
-        size_t size = intermediateMatrix.size();
-        for (int i = 0; i < 3; i++)
-        {
-            position = i;
-            for (int j = 0; j < 3; j++)
-            {
-                intermediateMatrix.at(j).at(i) = this->getFreeM().at(j);
-            }
-            detArray.push_back(this->findDet(intermediateMatrix));
-            intermediateMatrix = this->getMatrix();
-        }
-        for (double i : detArray)
-        {
-            this->sollution.push_back(i / this->det);
+            double temp = this->matrix.at(r1 * (this->SIZE + 1) + i);
+            this->matrix.at(r1 * (SIZE + 1) + i) = this->matrix.at(r2 * (this->SIZE + 1) + i);
+            this->matrix.at(r2 * (SIZE + 1) + i) = temp;
         }
     }
 
-    void multiply()
+    bool handleError(int i)
     {
-        for (int i = 0; i < 3; i++)
+        return i == this->SIZE;
+    }
+
+    void search()
+    {
+        for (int i = 0; i < this->SIZE; i++)
         {
-            this->vect.at(i) = this->getInversMatrix().at(i).at(0) * this->vect.at(0) + this->getInversMatrix().at(i).at(1) * this->vect.at(1) + this->getInversMatrix().at(i).at(2) * this->vect.at(2);
-        }
-        for (int i : this->vect)
-        {
-            cout << i << endl;
+            this->matrix.at(i * (SIZE + 1) + this->SIZE) /= this->matrix.at(i * (SIZE + 1) + i);
+            matrix.at(i * (SIZE + 1) + i) = 1;
         }
     }
 
-    vector<vector<int>> getInversMatrix()
+    void printSollution()
     {
-        vector<vector<int>> inverseMatrix;
-        vector<int> intermediateMatrix;
-        intermediateMatrix.push_back(this->getMatrix().at(1).at(1) * this->getMatrix().at(2).at(2) - this->getMatrix().at(1).at(2) * this->getMatrix().at(2).at(1));
-        intermediateMatrix.push_back(this->getMatrix().at(1).at(0) * this->getMatrix().at(2).at(2) - this->getMatrix().at(2).at(1) * this->getMatrix().at(2).at(0));
-        intermediateMatrix.push_back(this->getMatrix().at(1).at(0) * this->getMatrix().at(2).at(1) - this->getMatrix().at(1).at(1) * this->getMatrix().at(2).at(0));
-        inverseMatrix.push_back(intermediateMatrix);
-        intermediateMatrix.clear();
-        intermediateMatrix.push_back(this->getMatrix().at(0).at(1) * this->getMatrix().at(2).at(2) - this->getMatrix().at(0).at(2) * this->getMatrix().at(2).at(1));
-        intermediateMatrix.push_back(this->getMatrix().at(0).at(0) * this->getMatrix().at(2).at(2) - this->getMatrix().at(0).at(2) * this->getMatrix().at(2).at(0));
-        intermediateMatrix.push_back(this->getMatrix().at(0).at(0) * this->getMatrix().at(2).at(1) - this->getMatrix().at(0).at(1) * this->getMatrix().at(2).at(0));
-        inverseMatrix.push_back(intermediateMatrix);
-        intermediateMatrix.clear();
-        intermediateMatrix.push_back(this->getMatrix().at(0).at(1) * this->getMatrix().at(1).at(2) - this->getMatrix().at(0).at(2) * this->getMatrix().at(1).at(1));
-        intermediateMatrix.push_back(this->getMatrix().at(0).at(0) * this->getMatrix().at(1).at(2) - this->getMatrix().at(1).at(0) * this->getMatrix().at(0).at(2));
-        intermediateMatrix.push_back(this->getMatrix().at(0).at(0) * this->getMatrix().at(1).at(1) - this->getMatrix().at(0).at(1) * this->getMatrix().at(1).at(0));
-        inverseMatrix.push_back(intermediateMatrix);
-        intermediateMatrix.clear();
-        for (int i = 0; i < inverseMatrix.size(); i++)
+        cout << "Решение:" << endl;
+        for (int i = 0; i < this->SIZE; i++)
         {
-            for (int j = 0; j < inverseMatrix.at(i).size(); j++)
-            {
-                inverseMatrix.at(i).at(j) = inverseMatrix.at(i).at(j) / this->det;
-            }
+            cout << "x" << i + 1 << " = " << this->matrix.at(i * (SIZE + 1) + SIZE) << endl;
         }
-        for (int i = 0; i < inverseMatrix.size(); i++)
+    }
+
+    void printMAtrix()
+    {
+        for (int i = 0; i < this->SIZE; i++)
         {
-            for (int j = 0; j < inverseMatrix.at(i).size(); j++)
+            for (int j = 0; j <= this->SIZE; j++)
             {
-                inverseMatrix.at(i).at(j) = inverseMatrix.at(j).at(i);
+                cout << matrix[i * (this->SIZE + 1) + j] << "\t";
             }
+            cout << "\n";
         }
-        return inverseMatrix;
     }
 };
 
 int main()
 {
-    setlocale(0, "rus");
+    setlocale(LC_ALL, "rus");
+
+    srand(time(0));
+
+    vector<vector<double>> matrix;
+
+    int choice;
+
+    cout << "Если хотите ввксти матрицу с клавиатуры, введите 1, иначе 0" << endl;
+
+    cin >> choice;
+
+    switch (choice)
+    {
+    case 1:
+    {
+        int value;
+        for (int i = 0; i < 3; i++)
+        {
+            vector<double> row;
+            for (int j = 0; j <= 3; j++)
+            {
+                cin >> value;
+                row.push_back(value);
+            }
+            matrix.push_back(row);
+            row.clear();
+        }
+        break;
+    }
+    case 0:
+    {
+        for (int i = 0; i < 3; i++)
+        {
+            vector<double> row;
+            for (int j = 0; j <= 3; j++)
+            {
+                row.push_back(rand() % 10);
+            }
+            matrix.push_back(row);
+            row.clear();
+        }
+        break;
+    }
+
+    default:
+        cout << "Неверный ввод!" << endl;
+        return 1;
+    }
+
+    vector<double> newMatrix(12);
+
+    for (int i = 0; i < 3; i++)
+    {
+        for (int j = 0; j <= 3; j++)
+        {
+            newMatrix.at(i * (4) + j) = matrix.at(i).at(j);
+        }
+    }
+
     Matrix matrix1;
-    matrix1.setMatrix(3);
-    // matrix1.printResult();
+    matrix1.setMatrix(newMatrix);
+    matrix1.sollution();
+
     return 0;
 }
