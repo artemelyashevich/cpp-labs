@@ -24,52 +24,57 @@ public:
         return this->matrix;
     }
 
+    int getSize()
+    {
+        return this->SIZE;
+    }
+
     void setMatrix(vector<double> matrix)
     {
         this->matrix = matrix;
     }
 
-    void sollution()
+    void solution()
     {
 
         double ratio = 0;
         this->printMAtrix();
 
-        for (int i = 0; i < this->SIZE; i++)
+        for (int i = 0; i < this->getSize(); i++)
         {
-            if (this->matrix.at(i * (SIZE + 1) + i) == 0)
+            if (this->getMatrix().at(i * (this->getSize() + 1) + i) == 0)
             {
                 int j;
-                for (j = i + 1; j < this->SIZE; j++)
+                for (j = i + 1; j < this->getSize(); j++)
                 {
-                    if (this->matrix.at(j * (this->SIZE + 1) + i) != 0)
+                    if (this->getMatrix().at(j * (this->getSize() + 1) + i) != 0)
                     {
                         this->swap(i, j);
                         break;
                     }
                 }
-                if (j == this->SIZE)
+                if (j == this->getSize())
                 {
                     cout << "Система уравнений не имеет единственного решения." << endl;
                     return;
                 }
             }
 
-            for (int j = 0; j < this->SIZE; j++)
+            for (int j = 0; j < this->getSize(); j++)
             {
                 if (i != j)
                 {
-                    ratio = this->matrix.at(j * (SIZE + 1) + i) / this->matrix.at(i * (SIZE + 1) + i);
-                    for (int k = 0; k <= this->SIZE; k++)
+                    ratio = this->getMatrix().at(j * (this->getSize() + 1) + i) / this->getMatrix().at(i * (this->getSize() + 1) + i);
+                    for (int k = 0; k <= this->getSize(); k++)
                     {
-                        this->matrix.at(j * (SIZE + 1) + k) -= ratio * this->matrix.at(i * (SIZE + 1) + k);
+                        this->matrix.at(j * (SIZE + 1) + k) -= ratio * this->getMatrix().at(i * (this->getSize() + 1) + k);
                     }
                 }
             }
         }
 
         this->search();
-        this->printSollution();
+        this->printSolution();
     }
 
 private:
@@ -78,44 +83,44 @@ private:
 
     void swap(int r1, int r2)
     {
-        for (int i = 0; i <= this->SIZE; i++)
+        for (int i = 0; i <= this->getSize(); i++)
         {
-            double temp = this->matrix.at(r1 * (this->SIZE + 1) + i);
-            this->matrix.at(r1 * (SIZE + 1) + i) = this->matrix.at(r2 * (this->SIZE + 1) + i);
-            this->matrix.at(r2 * (SIZE + 1) + i) = temp;
+            double temp = this->getMatrix().at(r1 * (this->getSize() + 1) + i);
+            this->matrix.at(r1 * (this->getSize() + 1) + i) = this->getMatrix().at(r2 * (this->getSize() + 1) + i);
+            this->matrix.at(r2 * (this->getSize() + 1) + i) = temp;
         }
     }
 
     bool handleError(int i)
     {
-        return i == this->SIZE;
+        return i == this->getSize();
     }
 
     void search()
     {
-        for (int i = 0; i < this->SIZE; i++)
+        for (int i = 0; i < this->getSize(); i++)
         {
-            this->matrix.at(i * (SIZE + 1) + this->SIZE) /= this->matrix.at(i * (SIZE + 1) + i);
-            matrix.at(i * (SIZE + 1) + i) = 1;
+            this->matrix.at(i * (this->getSize() + 1) + this->getSize()) /= this->getMatrix().at(i * (this->getSize() + 1) + i);
+            matrix.at(i * (this->getSize() + 1) + i) = 1;
         }
     }
 
-    void printSollution()
+    void printSolution()
     {
         cout << "Решение:" << endl;
-        for (int i = 0; i < this->SIZE; i++)
+        for (int i = 0; i < this->getSize(); i++)
         {
-            cout << "x" << i + 1 << " = " << this->matrix.at(i * (SIZE + 1) + SIZE) << endl;
+            cout << "x" << i + 1 << " = " << this->getMatrix().at(i * (this->getSize() + 1) + this->getSize()) << endl;
         }
     }
 
     void printMAtrix()
     {
-        for (int i = 0; i < this->SIZE; i++)
+        for (int i = 0; i < this->getSize(); i++)
         {
-            for (int j = 0; j <= this->SIZE; j++)
+            for (int j = 0; j <= this->getSize(); j++)
             {
-                cout << matrix[i * (this->SIZE + 1) + j] << "\t";
+                cout << this->getMatrix().at(i * (this->getSize() + 1) + j) << "\t";
             }
             cout << "\n";
         }
@@ -186,7 +191,7 @@ int main()
 
     Matrix matrix1;
     matrix1.setMatrix(newMatrix);
-    matrix1.sollution();
+    matrix1.solution();
 
     return 0;
 }
