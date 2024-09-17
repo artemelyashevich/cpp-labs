@@ -48,13 +48,13 @@ public:
      * @param year Year of study (1 to 4).
      * @param group Group the student is associated with.
      */
-    Student(int id, const std::string &lastName, const std::string &firstName,
-            const std::string &middleName, const std::string &birthDate,
-            const std::string &address, const std::string &phone,
-            Faculty faculty, int year, const std::string &group)
+    Student(int id, const std::string& lastName, const std::string& firstName,
+        const std::string& middleName, const std::string& birthDate,
+        const std::string& address, const std::string& phone,
+        Faculty faculty, int year, const std::string& group)
         : id(id), lastName(lastName), firstName(firstName),
-          middleName(middleName), birthDate(birthDate), address(address),
-          phone(phone), faculty(faculty), year(year), group(group) {}
+        middleName(middleName), birthDate(birthDate), address(address),
+        phone(phone), faculty(faculty), year(year), group(group) {}
 };
 
 /**
@@ -79,7 +79,7 @@ public:
      *
      * @param student The Student object to add to the database.
      */
-    void addStudent(const Student &student)
+    void addStudent(const Student& student)
     {
         students.push_back(student);
     }
@@ -96,7 +96,7 @@ public:
     std::vector<Student> getStudentsByFaculty(Faculty faculty)
     {
         std::vector<Student> result;
-        for (const auto &student : students)
+        for (const auto& student : students)
         {
             if (student.faculty == faculty)
             {
@@ -118,7 +118,7 @@ public:
     std::vector<Student> getStudentsBornAfter(int year)
     {
         std::vector<Student> result;
-        for (const auto &student : students)
+        for (const auto& student : students)
         {
             int birthYear = std::stoi(student.birthDate.substr(0, 4));
             if (birthYear > year)
@@ -138,10 +138,10 @@ public:
      * @param group The name of the group to filter students by.
      * @return A vector of Student objects belonging to the specified group.
      */
-    std::vector<Student> getStudentsByGroup(const std::string &group)
+    std::vector<Student> getStudentsByGroup(const std::string& group)
     {
         std::vector<Student> result;
-        for (const auto &student : students)
+        for (const auto& student : students)
         {
             if (student.group == group)
             {
@@ -149,6 +149,86 @@ public:
             }
         }
         return result;
+    }
+
+    int getId() const {
+        return id;
+    }
+
+    void setId(int newId) {
+        id = newId;
+    }
+
+    std::string getLastName() const {
+        return lastName;
+    }
+
+    void setLastName(const std::string& newLastName) {
+        lastName = newLastName;
+    }
+
+    std::string getFirstName() const {
+        return firstName;
+    }
+
+    void setFirstName(const std::string& newFirstName) {
+        firstName = newFirstName;
+    }
+
+    std::string getMiddleName() const {
+        return middleName;
+    }
+
+    void setMiddleName(const std::string& newMiddleName) {
+        middleName = newMiddleName;
+    }
+
+    std::string getBirthDate() const {
+        return birthDate;
+    }
+
+    void setBirthDate(const std::string& newBirthDate) {
+        birthDate = newBirthDate;
+    }
+
+    std::string getAddress() const {
+        return address;
+    }
+
+    void setAddress(const std::string& newAddress) {
+        address = newAddress;
+    }
+
+    std::string getPhone() const {
+        return phone;
+    }
+
+    void setPhone(const std::string& newPhone) {
+        phone = newPhone;
+    }
+
+    Faculty getFaculty() const {
+        return faculty;
+    }
+
+    void setFaculty(Faculty newFaculty) {
+        faculty = newFaculty;
+    }
+
+    int getYear() const {
+        return year;
+    }
+
+    void setYear(int newYear) {
+        year = newYear;
+    }
+
+    std::string getGroup() const {
+        return group;
+    }
+
+    void setGroup(const std::string& newGroup) {
+        group = newGroup;
     }
 };
 
@@ -161,7 +241,7 @@ public:
  * @param condition The condition to evaluate.
  * @param message The message to display if the assertion fails.
  */
-void assertCondition(bool condition, const std::string &message)
+void assertCondition(bool condition, const std::string& message)
 {
     if (!condition)
     {

@@ -3,24 +3,15 @@
 #include <vector>
 #include <cassert>
 
-/**
- * @brief Represents a mathematical vector with various operations.
- */
+// Define a Vector class
 class Vector
 {
 private:
     std::vector<double> components;
 
 public:
-    /**
-     * @brief Constructs a vector with the given components.
-     * @param vec The components of the vector
-     */
     Vector(std::vector<double> vec) : components(vec) {}
 
-    /**
-     * @brief Increments each component of the vector by 1.
-     */
     void increment()
     {
         for (double &component : this->components)
@@ -29,9 +20,6 @@ public:
         }
     }
 
-    /**
-     * @brief Decrements each component of the vector by 1.
-     */
     void decrement()
     {
         for (double &component : this->components)
@@ -40,22 +28,13 @@ public:
         }
     }
 
-    /**
-     * @brief Overloaded indexing operator to access vector components.
-     * @param index The index of the component
-     * @return Reference to the component at the given index
-     */
+    // Overloaded indexing operator
     double &operator[](int index)
     {
         return this->components[index];
     }
 
-    /**
-     * @brief Calculates the scalar product of two vectors.
-     * @param v1 The first vector
-     * @param v2 The second vector
-     * @return The scalar product of the two vectors
-     */
+    // Method to calculate the scalar product of two vectors
     static double scalarProduct(const Vector v1, const Vector v2)
     {
         double product = 0;
@@ -66,10 +45,8 @@ public:
         return product;
     }
 
-    ***@brief Calculates the length of the vector.
-            *@ return The length of the vector *
-        /
-        double length() const
+    // Method to calculate the length of the vector
+    double length() const
     {
         double sum = 0;
         for (double component : this->components)
@@ -79,12 +56,7 @@ public:
         return std::sqrt(sum);
     }
 
-    /**
-     * @brief Calculates the angle between two vectors in radians.
-     * @param v1 The first vector
-     * @param v2 The second vector
-     * @return The angle between the two vectors in radians
-     */
+    // Method to calculate the angle between two vectors in radians
     static double angleBetween(const Vector v1, const Vector v2)
     {
         double dotProduct = scalarProduct(v1, v2);
@@ -93,11 +65,18 @@ public:
 
         return std::acos(dotProduct / (len1 * len2));
     }
+
+    void setComponents(std::vector<double> components)
+    {
+        this->components = components;
+    }
+
+    std::vector<double> getComponents()
+    {
+        return this->components;
+    }
 };
 
-/**
- * @brief Tests the increment and decrement functionality of the Vector class.
- */
 void testVectorIncrementDecrement()
 {
     Vector v(std::vector<double>{1, 2, 3});
@@ -109,9 +88,6 @@ void testVectorIncrementDecrement()
     assert(v[0] == 1 && v[1] == 2 && v[2] == 3);
 }
 
-/**
- * @brief Tests the scalar product calculation of two vectors.
- */
 void testScalarProductCalculation()
 {
     Vector v1(std::vector<double>{1, 2, 3});
@@ -121,18 +97,12 @@ void testScalarProductCalculation()
     assert(Vector::scalarProduct(v1, v2) == expectedScalarProduct);
 }
 
-/**
- * @brief Tests the calculation of vector length.
- */
 void testVectorLengthCalculation()
 {
     Vector v(std::vector<double>{3, 4});
     assert(v.length() == 5); // Length of vector (3, 4) should be 5
 }
 
-/**
- * @brief Tests the scalar product calculation with vectors of different sizes.
- */
 void testScalarProductWithDifferentSizes()
 {
     Vector v1(std::vector<double>{1, 2, 3});
@@ -142,9 +112,6 @@ void testScalarProductWithDifferentSizes()
     assert(std::isnan(Vector::scalarProduct(v1, v2)));
 }
 
-/**
- * @brief Tests the calculation of length for a zero vector.
- */
 void testZeroVectorLength()
 {
     Vector zeroVector(std::vector<double>{0, 0, 0});
@@ -153,9 +120,6 @@ void testZeroVectorLength()
     assert(zeroVector.length() == 0);
 }
 
-/**
- * @brief Tests the calculation of the angle between two zero vectors.
- */
 void testAngleCalculationWithZeroVectors()
 {
     Vector zeroVector1(std::vector<double>{0, 0, 0});

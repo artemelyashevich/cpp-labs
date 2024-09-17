@@ -83,6 +83,46 @@ public:
     {
         return end - start;
     }
+
+    int getStart() const
+    {
+        return start;
+    }
+
+    void setStart(int newStart)
+    {
+        start = newStart;
+    }
+
+    int getEnd() const
+    {
+        return end;
+    }
+
+    void setEnd(int newEnd)
+    {
+        end = newEnd;
+    }
+
+    bool isIncludeStart() const
+    {
+        return includeStart;
+    }
+
+    void setIncludeStart(bool include)
+    {
+        includeStart = include;
+    }
+
+    bool isIncludeEnd() const
+    {
+        return includeEnd;
+    }
+
+    void setIncludeEnd(bool include)
+    {
+        includeEnd = include;
+    }
 };
 
 // Test functions
