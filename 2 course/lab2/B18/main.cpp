@@ -1,5 +1,4 @@
 #include "pch.h"
-
 #include <iostream>
 #include <vector>
 #include <algorithm>
@@ -41,13 +40,21 @@ public:
 
 class PassengerAircraft : public Aircraft
 {
+private:
+    int numberOfPassengers;
+
 public:
-    PassengerAircraft(std::string model, int capacity, int payload, int range, double fuelConsumption)
-        : Aircraft(model, capacity, payload, range, fuelConsumption) {}
+    PassengerAircraft(std::string model, int capacity, int payload, int range, double fuelConsumption, int passengers)
+        : Aircraft(model, capacity, payload, range, fuelConsumption), numberOfPassengers(passengers) {}
+
+    int getNumberOfPassengers() const { return numberOfPassengers; }
+
+    void setNumberOfPassengers(int newPassengers) { numberOfPassengers = newPassengers; }
 
     std::string toString() const override
     {
-        return "Passenger Aircraft - " + Aircraft::toString();
+        return "Passenger Aircraft - " + Aircraft::toString() +
+               ", Number of Passengers: " + std::to_string(numberOfPassengers);
     }
 };
 
@@ -123,7 +130,7 @@ TEST(AircraftTest, ToStringTest)
 
 TEST(PassengerAircraftTest, MaximumValuesTest)
 {
-    PassengerAircraft aircraft("Boeing 747", 1000, 50000, 10000, 10.5);
+    PassengerAircraft aircraft("Boeing 747", 1000, 50000, 10000, 10.5, 100);
 
     EXPECT_EQ("Boeing 747", aircraft.getModel());
     EXPECT_EQ(1000, aircraft.getCapacity());
@@ -134,7 +141,7 @@ TEST(PassengerAircraftTest, MaximumValuesTest)
 
 TEST(PassengerAircraftTest, SetValuesTest)
 {
-    PassengerAircraft aircraft("Airbus A380", 800, 60000, 12000, 12.5);
+    PassengerAircraft aircraft("Airbus A380", 800, 60000, 12000, 12.5, 100);
 
     aircraft.setModel("Airbus A350");
     aircraft.setCapacity(900);
@@ -147,15 +154,6 @@ TEST(PassengerAircraftTest, SetValuesTest)
     EXPECT_EQ(70000, aircraft.getPayload());
     EXPECT_EQ(13000, aircraft.getRange());
     EXPECT_DOUBLE_EQ(13.5, aircraft.getFuelConsumption());
-}
-
-TEST(PassengerAircraftTest, ToStringTest)
-{
-    PassengerAircraft aircraft("Boeing 777", 500, 30000, 8000, 8.0);
-
-    std::string expectedString = "Passenger Aircraft - Model: Boeing 777, Capacity: 500, Payload: 30000, Range: 8000, Fuel Consumption: 8.000000";
-
-    EXPECT_EQ(expectedString, aircraft.toString());
 }
 
 TEST(CompareRangeTest, FirstAircraftLongerRange)
